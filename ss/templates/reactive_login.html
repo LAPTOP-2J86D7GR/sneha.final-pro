@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PersonaRAG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-gray: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .login-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 1px var(--accent-purple);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .input-icon .form-input {
+            padding-left: 2.5rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .demo-accounts {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--bg-tertiary);
+        }
+
+        .demo-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .demo-grid {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .demo-button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .demo-button:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-purple);
+        }
+
+        .demo-persona {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .demo-credentials {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-executive .demo-persona { color: var(--accent-purple); }
+        .demo-developer .demo-persona { color: var(--accent-blue); }
+        .demo-hr .demo-persona { color: var(--accent-green); }
+        .demo-student .demo-persona { color: var(--accent-amber); }
+        .demo-general .demo-persona { color: var(--accent-gray); }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .features {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .feature-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-purple);
+        }
+
+        .feature-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h1 class="app-title">PersonaRAG</h1>
+            <p class="app-subtitle">Personalized AI Assistant</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="login-form">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Sign In</span>
+                </button>
+            </form>
+
+            <!-- Demo Accounts -->
+            <div class="demo-accounts">
+                <div class="demo-title">Demo Accounts</div>
+                <div class="demo-grid">
+                    <button type="button" class="demo-button demo-executive" onclick="fillDemo('exec@company.com', 'exec123')">
+                        <div class="demo-persona">Executive</div>
+                        <div class="demo-credentials">exec@company.com</div>
+                    </button>
+                    <button type="button" class="demo-button demo-developer" onclick="fillDemo('dev@company.com', 'dev123')">
+                        <div class="demo-persona">Developer</div>
+                        <div class="demo-credentials">dev@company.com</div>
+                    </button>
+                    <button type="button" class="demo-button demo-hr" onclick="fillDemo('hr@company.com', 'hr123')">
+                        <div class="demo-persona">HR Specialist</div>
+                        <div class="demo-credentials">hr@company.com</div>
+                    </button>
+                    <button type="button" class="demo-button demo-student" onclick="fillDemo('student@university.edu', 'student123')">
+                        <div class="demo-persona">Student</div>
+                        <div class="demo-credentials">student@university.edu</div>
+                    </button>
+                    <button type="button" class="demo-button demo-general" onclick="fillDemo('user@email.com', 'user123')">
+                        <div class="demo-persona">General</div>
+                        <div class="demo-credentials">user@email.com</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="features-title">Features</div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="feature-text">Role-Based AI</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="feature-text">RAG Powered</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="feature-text">Real-Time Chat</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fillDemo(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            
+            // Add visual feedback
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            emailInput.style.borderColor = 'var(--accent-purple)';
+            passwordInput.style.borderColor = 'var(--accent-purple)';
+            
+            setTimeout(() => {
+                emailInput.style.borderColor = '';
+                passwordInput.style.borderColor = '';
+            }, 1000);
+        }
+
+        // Handle form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const submitButton = document.getElementById('submitButton');
+            const originalContent = submitButton.innerHTML;
+            
+            submitButton.innerHTML = '<i class="fas fa-spinner loading-spinner"></i><span>Signing in...</span>';
+            submitButton.disabled = true;
+            
+            // Let the form submit normally
+            // The browser will handle the redirect
+        });
+
+        // Add input animations
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

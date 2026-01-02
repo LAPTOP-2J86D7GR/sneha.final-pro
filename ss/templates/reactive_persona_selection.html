@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Role - PersonaRAG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #525252;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-gray: #6b7280;
+            --border-color: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        .selection-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-logo i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 16px 64px rgba(139, 92, 246, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header-icon i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .header-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .header-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Persona Grid */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .persona-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .persona-card:hover::before {
+            left: 100%;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-purple);
+        }
+
+        .persona-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .persona-card:hover .persona-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .persona-executive .persona-icon { background: linear-gradient(135deg, var(--accent-purple), #7c3aed); }
+        .persona-developer .persona-icon { background: linear-gradient(135deg, var(--accent-blue), #2563eb); }
+        .persona-hr .persona-icon { background: linear-gradient(135deg, var(--accent-green), #059669); }
+        .persona-student .persona-icon { background: linear-gradient(135deg, var(--accent-amber), #d97706); }
+        .persona-general .persona-icon { background: linear-gradient(135deg, var(--accent-gray), #4b5563); }
+
+        .persona-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .persona-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .persona-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .persona-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .persona-feature i {
+            font-size: 16px;
+        }
+
+        .persona-executive .persona-feature i { color: var(--accent-purple); }
+        .persona-developer .persona-feature i { color: var(--accent-blue); }
+        .persona-hr .persona-feature i { color: var(--accent-green); }
+        .persona-student .persona-feature i { color: var(--accent-amber); }
+        .persona-general .persona-feature i { color: var(--accent-gray); }
+
+        .persona-button {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .persona-card:hover .persona-button {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+            transform: scale(1.05);
+        }
+
+        /* Comparison Section */
+        .comparison {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-example {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .comparison-response {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.875rem;
+            border-left: 3px solid;
+        }
+
+        .comparison-executive { border-color: var(--accent-purple); }
+        .comparison-developer { border-color: var(--accent-blue); }
+        .comparison-hr { border-color: var(--accent-green); }
+        .comparison-student { border-color: var(--accent-amber); }
+        .comparison-general { border-color: var(--accent-gray); }
+
+        .comparison-role {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-executive .comparison-role { color: var(--accent-purple); }
+        .comparison-developer .comparison-role { color: var(--accent-blue); }
+        .comparison-hr .comparison-role { color: var(--accent-green); }
+        .comparison-student .comparison-role { color: var(--accent-amber); }
+        .comparison-general .comparison-role { color: var(--accent-gray); }
+
+        .comparison-text {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+
+            .persona-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="selection-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="nav-logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="nav-title">PersonaRAG</div>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>{{ current_user.email }}</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Section -->
+            <header class="header">
+                <div class="header-icon">
+                    <i class="fas fa-user-tag"></i>
+                </div>
+                <h1 class="header-title">Choose Your Persona</h1>
+                <p class="header-subtitle">
+                    Select your professional role to receive personalized, context-aware responses tailored to your expertise and communication style
+                </p>
+            </header>
+
+            <!-- Persona Grid -->
+            <div class="persona-grid">
+                <div class="persona-card persona-executive" onclick="selectPersona('Executive')">
+                    <div class="persona-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h2 class="persona-name">Executive</h2>
+                    <p class="persona-description">
+                        Strategic decision-maker focused on business impact, ROI analysis, and high-level insights
+                    </p>
+                    <div class="persona-features">
+                        <div class="persona-feature">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Strategic Focus</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>ROI Analysis</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-trophy"></i>
+                            <span>Decision-Oriented</span>
+                        </div>
+                    </div>
+                    <a href="/chat/Executive" class="persona-button">
+                        <span>Continue as Executive</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="persona-card persona-developer" onclick="selectPersona('Developer')">
+                    <div class="persona-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h2 class="persona-name">Developer</h2>
+                    <p class="persona-description">
+                        Technical expert seeking implementation details, code examples, and architectural guidance
+                    </p>
+                    <div class="persona-features">
+                        <div class="persona-feature">
+                            <i class="fas fa-laptop-code"></i>
+                            <span>Technical Depth</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-terminal"></i>
+                            <span>Code Examples</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Architecture</span>
+                        </div>
+                    </div>
+                    <a href="/chat/Developer" class="persona-button">
+                        <span>Continue as Developer</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="persona-card persona-hr" onclick="selectPersona('HR Specialist')">
+                    <div class="persona-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2 class="persona-name">HR Specialist</h2>
+                    <p class="persona-description">
+                        People-focused professional requiring policy guidance, compliance information, and process documentation
+                    </p>
+                    <div class="persona-features">
+                        <div class="persona-feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Policy & Compliance</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-heart"></i>
+                            <span>People Impact</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-balance-scale"></i>
+                            <span>Fairness Focus</span>
+                        </div>
+                    </div>
+                    <a href="/chat/HR Specialist" class="persona-button">
+                        <span>Continue as HR Specialist</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="persona-card persona-student" onclick="selectPersona('Student')">
+                    <div class="persona-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2 class="persona-name">Student</h2>
+                    <p class="persona-description">
+                        Learner seeking educational explanations, step-by-step guidance, and foundational knowledge
+                    </p>
+                    <div class="persona-features">
+                        <div class="persona-feature">
+                            <i class="fas fa-book"></i>
+                            <span>Educational Focus</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Simple Explanations</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-road"></i>
+                            <span>Step-by-Step</span>
+                        </div>
+                    </div>
+                    <a href="/chat/Student" class="persona-button">
+                        <span>Continue as Student</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="persona-card persona-general" onclick="selectPersona('General')">
+                    <div class="persona-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2 class="persona-name">General</h2>
+                    <p class="persona-description">
+                        Balanced user seeking accessible information with practical applications and broad understanding
+                    </p>
+                    <div class="persona-features">
+                        <div class="persona-feature">
+                            <i class="fas fa-balance-scale-left"></i>
+                            <span>Balanced Approach</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-universal-access"></i>
+                            <span>Accessible Content</span>
+                        </div>
+                        <div class="persona-feature">
+                            <i class="fas fa-tools"></i>
+                            <span>Practical Focus</span>
+                        </div>
+                    </div>
+                    <a href="/chat/General" class="persona-button">
+                        <span>Continue as General</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Comparison Section -->
+            <div class="comparison">
+                <h2 class="comparison-title">How Different Personas Answer the Same Question</h2>
+                <div class="comparison-example">
+                    "What is the remote work policy?"
+                </div>
+                <div class="comparison-grid">
+                    <div class="comparison-response comparison-executive">
+                        <div class="comparison-role">Executive</div>
+                        <div class="comparison-text">
+                            Strategic hybrid model supporting productivity with 3 remote days, balancing flexibility and team collaboration.
+                        </div>
+                    </div>
+                    <div class="comparison-response comparison-developer">
+                        <div class="comparison-role">Developer</div>
+                        <div class="comparison-text">
+                            VPN setup required, dev environment access, time tracking integration, and secure coding practices.
+                        </div>
+                    </div>
+                    <div class="comparison-response comparison-hr">
+                        <div class="comparison-role">HR Specialist</div>
+                        <div class="comparison-text">
+                            Policy requires manager approval, compliance tracking, team coordination, and documentation procedures.
+                        </div>
+                    </div>
+                    <div class="comparison-response comparison-student">
+                        <div class="comparison-role">Student</div>
+                        <div class="comparison-text">
+                            Think of it like working from home! You need permission and track your time for the company.
+                        </div>
+                    </div>
+                    <div class="comparison-response comparison-general">
+                        <div class="comparison-role">General</div>
+                        <div class="comparison-text">
+                            Employees can work remotely up to 3 days with proper approval and time tracking systems.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2024 PersonaRAG. Choose your role to get personalized AI assistance.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function selectPersona(persona) {
+            // Add visual feedback
+            event.target.closest('.persona-card').style.transform = 'scale(0.95)';
+            
+            // Redirect after brief delay for animation
+            setTimeout(() => {
+                window.location.href = `/chat/${encodeURIComponent(persona)}`;
+            }, 200);
+        }
+
+        // Add entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.persona-card');
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Add hover effect enhancement
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

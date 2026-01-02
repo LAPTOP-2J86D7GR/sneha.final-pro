@@ -1,0 +1,29 @@
+{
+  "personas": [
+    {
+      "description": "Strategic business leader",
+      "id": "Executive",
+      "name": "Executive"
+    },
+    {
+      "description": "Technical expert",
+      "id": "Developer",
+      "name": "Developer"
+    },
+    {
+      "description": "People and policy expert",
+      "id": "HR Specialist",
+      "name": "HR Specialist"
+    },
+    {
+      "description": "Learning-focused individual",
+      "id": "Student",
+      "name": "Student"
+    },
+    {
+      "description": "Versatile assistant",
+      "id": "General",
+      "name": "General"
+    }
+  ]
+}

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - PersonaRAG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #525252;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-gray: #6b7280;
+            --border-color: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        .home-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-logo i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .nav-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-tertiary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar i {
+            font-size: 12px;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 16px 64px rgba(139, 92, 246, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-logo i {
+            font-size: 48px;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Features Grid */
+        .features {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-purple);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 20px;
+            color: var(--accent-purple);
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Personas Section */
+        .personas {
+            margin-bottom: 6rem;
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .persona-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-purple);
+        }
+
+        .persona-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 18px;
+            color: white;
+        }
+
+        .persona-executive .persona-icon { background: var(--accent-purple); }
+        .persona-developer .persona-icon { background: var(--accent-blue); }
+        .persona-hr .persona-icon { background: var(--accent-green); }
+        .persona-student .persona-icon { background: var(--accent-amber); }
+        .persona-general .persona-icon { background: var(--accent-gray); }
+
+        .persona-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .persona-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Section */
+        .stats {
+            margin-bottom: 6rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-purple);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .personas-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="nav-logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="nav-title">PersonaRAG</div>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('persona_selection') }}" class="nav-link">
+                    <i class="fas fa-user-tag"></i>
+                    <span>Personas</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>{{ current_user.email }}</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h1 class="hero-title">PersonaRAG</h1>
+                <p class="hero-subtitle">
+                    Personalized AI assistant that adapts responses based on your role using Retrieval-Augmented Generation
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('persona_selection') }}" class="btn-primary">
+                        <i class="fas fa-comments"></i>
+                        Start Chat
+                    </a>
+                    <button onclick="showDemo()" class="btn-secondary">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </button>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <h2 class="section-title">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="feature-title">Role-Based Responses</h3>
+                        <p class="feature-description">
+                            Get answers tailored to your specific role and expertise level with personalized communication style
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Executive</span>
+                            <span class="feature-tag">Developer</span>
+                            <span class="feature-tag">HR</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="feature-title">RAG Powered</h3>
+                        <p class="feature-description">
+                            Powered by Retrieval-Augmented Generation for accurate, context-aware answers from knowledge base
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Vector Search</span>
+                            <span class="feature-tag">Context</span>
+                            <span class="feature-tag">Knowledge</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3 class="feature-title">Smart Adaptation</h3>
+                        <p class="feature-description">
+                            Automatically adjusts tone, depth, and complexity based on your persona and conversation context
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">AI-Powered</span>
+                            <span class="feature-tag">Dynamic</span>
+                            <span class="feature-tag">Contextual</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="feature-title">Real-Time Chat</h3>
+                        <p class="feature-description">
+                            Modern chat interface with streaming responses, typing indicators, and smooth user experience
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">WebSocket</span>
+                            <span class="feature-tag">Streaming</span>
+                            <span class="feature-tag">Real-Time</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Personas Section -->
+            <section class="personas">
+                <h2 class="section-title">Supported Personas</h2>
+                <div class="personas-grid">
+                    <div class="persona-card persona-executive" onclick="selectPersona('Executive')">
+                        <div class="persona-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="persona-name">Executive</div>
+                        <div class="persona-description">Strategic, ROI-focused</div>
+                    </div>
+
+                    <div class="persona-card persona-developer" onclick="selectPersona('Developer')">
+                        <div class="persona-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="persona-name">Developer</div>
+                        <div class="persona-description">Technical, detailed</div>
+                    </div>
+
+                    <div class="persona-card persona-hr" onclick="selectPersona('HR Specialist')">
+                        <div class="persona-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="persona-name">HR Specialist</div>
+                        <div class="persona-description">Policy, compliance</div>
+                    </div>
+
+                    <div class="persona-card persona-student" onclick="selectPersona('Student')">
+                        <div class="persona-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="persona-name">Student</div>
+                        <div class="persona-description">Educational, simple</div>
+                    </div>
+
+                    <div class="persona-card persona-general" onclick="selectPersona('General')">
+                        <div class="persona-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="persona-name">General</div>
+                        <div class="persona-description">Balanced, accessible</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats">
+                <h2 class="section-title">Platform Capabilities</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Personas Supported</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Knowledge Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100ms</div>
+                        <div class="stat-label">Response Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Availability</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2024 PersonaRAG. Personalized AI Assistant powered by Retrieval-Augmented Generation.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demoModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-2xl p-8 max-w-2xl mx-4 border border-gray-800">
+            <h3 class="text-2xl font-bold text-white mb-6">See PersonaRAG in Action</h3>
+            <div class="space-y-4">
+                <div class="bg-purple-900/30 rounded-lg p-4 border border-purple-800">
+                    <div class="font-semibold text-purple-300 mb-2">Executive asks:</div>
+                    <div class="text-sm text-gray-300">"What's the business impact of our new strategy?"</div>
+                    <div class="text-xs text-purple-400 mt-2 italic">Response: Strategic analysis with ROI metrics and risk assessment</div>
+                </div>
+                <div class="bg-blue-900/30 rounded-lg p-4 border border-blue-800">
+                    <div class="font-semibold text-blue-300 mb-2">Developer asks:</div>
+                    <div class="text-sm text-gray-300">"How do I implement the authentication system?"</div>
+                    <div class="text-xs text-blue-400 mt-2 italic">Response: Technical implementation with code examples</div>
+                </div>
+                <div class="bg-green-900/30 rounded-lg p-4 border border-green-800">
+                    <div class="font-semibold text-green-300 mb-2">HR Specialist asks:</div>
+                    <div class="text-sm text-gray-300">"What are the compliance requirements?"</div>
+                    <div class="text-xs text-green-400 mt-2 italic">Response: Policy guidance with legal considerations</div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeDemo()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectPersona(persona) {
+            window.location.href = `/chat?persona=${encodeURIComponent(persona)}`;
+        }
+
+        function showDemo() {
+            document.getElementById('demoModal').style.display = 'flex';
+        }
+
+        function closeDemo() {
+            document.getElementById('demoModal').style.display = 'none';
+        }
+
+        // Add entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.feature-card, .persona-card, .stat-card');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('demoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDemo();
+            }
+        });
+    </script>
+</body>
+</html>
